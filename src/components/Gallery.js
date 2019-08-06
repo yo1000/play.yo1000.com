@@ -33,11 +33,10 @@ class Gallery extends Component {
                             this.toggleLightbox(i);
                         }}
                     >
-                        <img src={obj.thumbnail} />
+                        <img src={obj.source} />
+                        <h3>{obj.caption}</h3>
+                        <p>{obj.description}</p>
                     </a>
-
-                    <h3>{obj.caption}</h3>
-                    <p>{obj.description}</p>
                 </article>
             );
         });
