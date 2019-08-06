@@ -12,10 +12,10 @@ class Footer extends React.Component {
                     </ul>
                     <ul className="copyright">
                         <li>記載されている会社名・製品名・システム名などは、各社の商標、または登録商標です。</li>
-                        <li><a href="https://www.jp.square-enix.com/ffviii/guideline.html" target="_blank" rel="noopener">
+                        <li><a href="https://www.jp.square-enix.com/ffviii/guideline.html" target="_blank" rel="noopener noreferrer">
                             Copyright (C) 1999, 2019 SQUARE ENIX CO., LTD. All Rights Reserved.
                         </a></li>
-                        <li><a href="https://support.jp.square-enix.com/rule.php?id=5381&la=0&tag=authc" target="_blank" rel="noopener">
+                        <li><a href="https://support.jp.square-enix.com/rule.php?id=5381&la=0&tag=authc" target="_blank" rel="noopener noreferrer">
                             Copyright (C) 2010 - 2019 SQUARE ENIX CO., LTD. All Rights Reserved.
                         </a></li>
                     </ul>
