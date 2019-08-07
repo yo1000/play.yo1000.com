@@ -3,6 +3,7 @@ import Helmet from 'react-helmet'
 import Layout from '../components/layout'
 // import Lightbox from 'react-images'
 import Gallery from '../components/Gallery'
+import Footer from '../components/Footer';
 
 let id = 1
 
@@ -61,6 +62,7 @@ class HomeIndex extends React.Component {
                             description
                         })).reverse()} />
                     </section>
+                    <Footer/>
                 </div>
             </Layout>
         )
