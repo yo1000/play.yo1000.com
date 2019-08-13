@@ -1,11 +1,9 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StaticQuery, graphql } from 'gatsby'
-import Carousel, { Modal, ModalGateway } from "react-images";
 import Img from 'gatsby-image';
 
-const ImageCard = (props) => (
-<StaticQuery query={graphql`
+const ImageCards = () => (
+    <StaticQuery query={graphql`
     query {
         images: allFile {
             edges {
@@ -13,7 +11,7 @@ const ImageCard = (props) => (
                     relativePath
                     name
                     childImageSharp {
-                        sizes(maxWidth: 600) {
+                        sizes(maxWidth: 800, quality: 100) {
                             ...GatsbyImageSharpSizes
                         }
                     }
@@ -24,82 +22,43 @@ const ImageCard = (props) => (
     }`}
 
     render={(data) => {
-        const image = data.images.edges.find(n => {
-            return n.node.relativePath.includes(props.src);
-        });
-
-        if (!image) { return null; }
-        const imageSizes = image.node.childImageSharp.sizes;
-        const imagePublicUrl = image.node.publicURL;
-
-        return (<article className="6u 12u$(xsmall) work-item">
-            <a className="image fit thumb" target="_blank" rel="noopener noreferrer" href={imagePublicUrl}>
-                <Img alt={props.alt} sizes={imageSizes}/>
-                <h3>{props.caption}</h3>
-                <p>{props.description}</p>
-            </a>
-        </article>);
+        return data.images.edges.map((image, i) => {
+            const srcSet = image.node.childImageSharp.sizes.srcSet.replace(/\s+/g, '?').split(/\?*,\?*/)
+            let srcLarge = srcSet.find((src) => {
+                return src.endsWith('1600w');
+            })
+            if (!srcLarge) {
+                srcLarge = srcSet.find((src) => {
+                    return src.endsWith('1200w');
+                })
+            }
+            if (!srcLarge) {
+                srcLarge = image.node.childImageSharp.sizes.src
+            }
+            return (
+                <article className="6u 12u$(xsmall) work-item">
+                    <a className="image fit thumb" target="_blank" rel="noopener noreferrer" href={srcLarge}>
+                        <Img alt={image.node.name} sizes={image.node.childImageSharp.sizes}/>
+                    </a>
+                    <h3>{image.node.name}</h3>
+                        <p>
+                            <a href={image.node.publicURL} target="_blank" rel="noopener noreferrer">original size</a>
+                        </p>
+                </article>
+            )
+        }).reverse()
     }}
 />)
 
-
 class Gallery extends Component {
-    constructor () {
-        super();
-
-        this.state = {
-            lightboxIsOpen: false,
-            selectedIndex: 0
-        };
-        
-        this.toggleLightbox = this.toggleLightbox.bind(this);
-    }
-    toggleLightbox(selectedIndex) {
-        this.setState(state => ({
-            lightboxIsOpen: !state.lightboxIsOpen,
-            selectedIndex
-        }));
-    }
-    renderGallery (images) {
-        if (!images) return;
-
-        const gallery = images.map((obj, i) => {
-            return (<ImageCard
-                src={obj.src}
-                alt={obj.caption}
-                caption={obj.caption}
-                description={obj.description}
-            />);
-        });
-
+    render () {
         return (
             <div className="row">
-                {gallery}
-            </div>
-        );
-    }
-    render () {
-        const { images } = this.props;
-        const { selectedIndex, lightboxIsOpen } = this.state;
-
-        return (
-            <div>
-                {this.renderGallery(images)}
-                <ModalGateway>
-                    {lightboxIsOpen && (
-                        <Modal onClose={this.toggleLightbox}>
-                            <Carousel currentIndex={selectedIndex} views={images} />
-                        </Modal>
-                    )}
-                </ModalGateway>
+                <ImageCards/>
             </div>
         );
     }
 }
 
 Gallery.displayName = 'Gallery';
-Gallery.propTypes = {
-    images: PropTypes.array
-};
-
 export default Gallery;
