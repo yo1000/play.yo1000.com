@@ -8,14 +8,19 @@ const ImageCards = () => (
         images: allFile {
             edges {
                 node {
-                    relativePath
                     name
+                    relativePath
+                    relativeDirectory
+                    publicURL
                     childImageSharp {
-                        sizes(maxWidth: 800, quality: 50) {
+                        sizes(maxWidth: 800, pngCompressionSpeed: 10, srcSetBreakpoints: [800]) {
                             ...GatsbyImageSharpSizes
                         }
+                        original {
+                            height
+                            width
+                        }
                     }
-                    publicURL
                 }
             }
         }
@@ -25,26 +30,14 @@ const ImageCards = () => (
         return data.images.edges.sort((o1, o2) => {
             return o1.node.name < o2.node.name ? 1 : -1
         }).map((image, i) => {
-            const srcSet = image.node.childImageSharp.sizes.srcSet.replace(/\s+/g, '?').split(/\?*,\?*/)
-            let srcLarge = srcSet.find((src) => {
-                return src.endsWith('1600w');
-            })
-            if (!srcLarge) {
-                srcLarge = srcSet.find((src) => {
-                    return src.endsWith('1200w');
-                })
-            }
-            if (!srcLarge) {
-                srcLarge = image.node.childImageSharp.sizes.src
-            }
             return (
                 <article className="6u 12u$(xsmall) work-item">
-                    <a className="image fit thumb" target="_blank" rel="noopener noreferrer" href={srcLarge}>
+                    <a className="image fit thumb" target="_blank" rel="noopener noreferrer" href={image.node.childImageSharp.sizes.src}>
                         <Img alt={image.node.name} sizes={image.node.childImageSharp.sizes}/>
                     </a>
                     <h3>{image.node.name}</h3>
                         <p>
-                            <a href={image.node.publicURL} target="_blank" rel="noopener noreferrer">original size</a>
+                            <a href={image.node.publicURL} target="_blank" rel="noopener noreferrer">original ({image.node.childImageSharp.original.width}x{image.node.childImageSharp.original.height})</a>
                         </p>
                 </article>
             )
