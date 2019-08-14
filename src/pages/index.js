@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 class HomeIndex extends React.Component {
     render() {
         const siteTitle = "like talk2wall"
-        const siteDescription = "like taking to a wall"
+        const siteDescription = "like talking to a wall"
 
         return (
             <Layout>
@@ -18,7 +18,7 @@ class HomeIndex extends React.Component {
                 <div id="main">
                     <section id="one">
                         <header className="major">
-                            <h2>like taking to a wall</h2>
+                            <h2>like talking to a wall</h2>
                         </header>
                         <p>旅のきろく</p>
                     </section>

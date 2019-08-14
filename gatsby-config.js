@@ -2,7 +2,7 @@ module.exports = {
   siteMetadata: {
     title: "like talk2wall",
     author: "yo1000 | YO!CHI KIKUCHI",
-    description: "like taking to a wall"
+    description: "like talking to a wall"
   },
   plugins: [
     'gatsby-plugin-react-helmet',
