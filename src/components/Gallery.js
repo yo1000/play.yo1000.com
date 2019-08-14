@@ -11,7 +11,7 @@ const ImageCards = () => (
                     relativePath
                     name
                     childImageSharp {
-                        sizes(maxWidth: 800, quality: 80) {
+                        sizes(maxWidth: 800, quality: 50) {
                             ...GatsbyImageSharpSizes
                         }
                     }
