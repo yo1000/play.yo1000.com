@@ -11,7 +11,7 @@ const ImageCards = () => (
                     relativePath
                     name
                     childImageSharp {
-                        sizes(maxWidth: 800, quality: 100) {
+                        sizes(maxWidth: 800, quality: 80) {
                             ...GatsbyImageSharpSizes
                         }
                     }
@@ -22,7 +22,9 @@ const ImageCards = () => (
     }`}
 
     render={(data) => {
-        return data.images.edges.map((image, i) => {
+        return data.images.edges.sort((o1, o2) => {
+            return o1.node.name < o2.node.name ? 1 : -1
+        }).map((image, i) => {
             const srcSet = image.node.childImageSharp.sizes.srcSet.replace(/\s+/g, '?').split(/\?*,\?*/)
             let srcLarge = srcSet.find((src) => {
                 return src.endsWith('1600w');
@@ -46,7 +48,7 @@ const ImageCards = () => (
                         </p>
                 </article>
             )
-        }).reverse()
+        })
     }}
 />)
 
